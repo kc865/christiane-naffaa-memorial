@@ -15,6 +15,19 @@
 
   buildGallery(images);
   buildThumbs(images);
+  initScrollCue();
+
+  function initScrollCue() {
+    const scrollCue = document.querySelector('.scroll-cue');
+    const gallerySection = document.getElementById('gallery-section');
+    if (!scrollCue || !gallerySection || !('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      const isBelowViewport = entry.boundingClientRect.top > 0;
+      scrollCue.classList.toggle('is-visible', !entry.isIntersecting && isBelowViewport);
+    });
+    observer.observe(gallerySection);
+  }
 
   function buildGallery(files) {
     if (!files.length) return;
